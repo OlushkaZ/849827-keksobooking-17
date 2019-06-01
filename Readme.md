@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Ольга Жидкова](https://up.htmlacademy.ru/javascript/17/user/849827).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Лепёшкин](https://htmlacademy.ru/profile/id144641).
 
 ---
 
