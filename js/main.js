@@ -16,18 +16,18 @@ var getRandomInt = function (min, max) {
 
 var addMockElement = function (arr, count, type, x, y) {
   arr.push(
-    {
-      'author': {
-        'avatar': 'img/avatars/user0' + count + '.png'
-      },
-      'offer': {
-        'type': type
-      },
-      'location': {
-        'x': x,
-        'y': y
-      }
-    });
+      {
+        'author': {
+          'avatar': 'img/avatars/user0' + count + '.png'
+        },
+        'offer': {
+          'type': type
+        },
+        'location': {
+          'x': x,
+          'y': y
+        }
+      });
 };
 
 for (var i = 1; i <= 8; i++) {
