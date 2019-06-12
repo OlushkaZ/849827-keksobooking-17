@@ -1,6 +1,7 @@
 'use strict';
 
 var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var COUNT_MOCK_ELEMENTS = 8;
 var appartments = [];
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
@@ -30,11 +31,11 @@ var addMockElement = function (arr, count, type, x, y) {
       });
 };
 
-for (var i = 1; i <= 8; i++) {
-  addMockElement(appartments, i, APPARTMENT_TYPES[getRandomInt(0, 3)], getRandomInt(0, map.clientWidth), getRandomInt(130, 630));
-}
-
-map.classList.remove('map--faded');
+var createMock = function () {
+  for (var i = 1; i <= COUNT_MOCK_ELEMENTS; i++) {
+    addMockElement(appartments, i, APPARTMENT_TYPES[getRandomInt(0, 3)], getRandomInt(0, map.clientWidth), getRandomInt(130, 630));
+  }
+};
 
 var renderPin = function (pin) {
   var pinElement = pinTemplate.cloneNode(true);
@@ -48,7 +49,13 @@ var renderPin = function (pin) {
   return pinElement;
 };
 
-for (var j = 0; j < appartments.length; j++) {
-  fragment.appendChild(renderPin(appartments[j]));
-}
+var createFrament = function () {
+  for (var j = 0; j < appartments.length; j++) {
+    fragment.appendChild(renderPin(appartments[j]));
+  }
+};
+
+createMock();
+map.classList.remove('map--faded');
+createFrament();
 pinList.appendChild(fragment);
