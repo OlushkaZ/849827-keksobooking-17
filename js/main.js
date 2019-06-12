@@ -1,11 +1,14 @@
 'use strict';
 
 var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
-var COUNT_MOCK_ELEMENTS = 8;
+var Mock = {
+  countElements: 8,
+  minY: 130,
+  maxY: 630
+};
 var appartments = [];
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
-var fragment = document.createDocumentFragment();
 
 var pinTemplate = document.querySelector('#pin')
     .content
@@ -32,8 +35,8 @@ var addMockElement = function (arr, count, type, x, y) {
 };
 
 var createMock = function () {
-  for (var i = 1; i <= COUNT_MOCK_ELEMENTS; i++) {
-    addMockElement(appartments, i, APPARTMENT_TYPES[getRandomInt(0, 3)], getRandomInt(0, map.clientWidth), getRandomInt(130, 630));
+  for (var i = 1; i <= Mock.countElements; i++) {
+    addMockElement(appartments, i, APPARTMENT_TYPES[getRandomInt(0, APPARTMENT_TYPES.length - 1)], getRandomInt(0, map.clientWidth), getRandomInt(Mock.minY, Mock.maxY));
   }
 };
 
@@ -43,19 +46,20 @@ var renderPin = function (pin) {
 
   pinImg.src = pin.author.avatar;
   pinImg.alt = pin.offer.type;
-  pinElement.style.left = pin.location.x + pinImg.width / 2 + 'px';
-  pinElement.style.top = pin.location.y + pinImg.height + 'px';
+  pinElement.style.left = pin.location.x - pinImg.width / 2 + 'px';
+  pinElement.style.top = pin.location.y - pinImg.height + 'px';
 
   return pinElement;
 };
 
-var createFrament = function () {
+var createFragment = function () {
+  var fragment = document.createDocumentFragment();
   for (var j = 0; j < appartments.length; j++) {
     fragment.appendChild(renderPin(appartments[j]));
   }
+  return fragment;
 };
 
 createMock();
 map.classList.remove('map--faded');
-createFrament();
-pinList.appendChild(fragment);
+pinList.appendChild(createFragment());
