@@ -10,8 +10,8 @@ var appartments = [];
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
 var adForm = document.querySelector('.ad-form');
-var filterForm = document.querySelector('.map__filters');
-var mapPinMain = document.querySelector('.map__pin--main');
+var filterForm = map.querySelector('.map__filters');
+var mapPinMain = map.querySelector('.map__pin--main');
 
 var pinTemplate = document.querySelector('#pin')
     .content
@@ -63,7 +63,7 @@ var createFragment = function () {
   return fragment;
 };
 
-var toggleActivForm = function (form, state) {
+var toggleActiveForm = function (form, state) {
   var formElements = form.querySelectorAll('select, fieldset');
   for (var i = 0; i < formElements.length; i++) {
     formElements[i].disabled = state;
@@ -72,20 +72,20 @@ var toggleActivForm = function (form, state) {
 
 var setInactivAdForm = function () {
   adForm.classList.add('ad-form--disabled');
-  toggleActivForm(adForm, true);
+  toggleActiveForm(adForm, true);
 };
 
 var setActivAdForm = function () {
   adForm.classList.remove('ad-form--disabled');
-  toggleActivForm(adForm, false);
+  toggleActiveForm(adForm, false);
 };
 
 var setInactivFilterForm = function () {
-  toggleActivForm(filterForm, true);
+  toggleActiveForm(filterForm, true);
 };
 
 var setActivFilterForm = function () {
-  toggleActivForm(filterForm, false);
+  toggleActiveForm(filterForm, false);
 };
 
 var setInactivState = function () {
@@ -100,6 +100,7 @@ var setActiveState = function () {
   setActivFilterForm();
   createMock();
   pinList.appendChild(createFragment());
+  mapPinMain.removeEventListener('click', setActiveState);
 };
 
 var findChild = function (parent, childType) {
@@ -117,9 +118,8 @@ var calcCenterCoordinates = function (element) {
   var elImg = findChild(element, 'IMG');
   var xOffset = elImg ? elImg.width / 2 : 0;
   var yOffset = elImg ? elImg.height / 2 : 0;
-  var x = parseInt(element.style.left.match(/\d+/), 10) + xOffset;
-  var y = parseInt(element.style.top.match(/\d+/), 10) + yOffset;
-  return {'x': x, 'y': y};
+  return {'x': parseInt(element.style.left, 10) + xOffset,
+    'y': parseInt(element.style.top, 10) + yOffset};
 };
 
 var setAddress = function () {
