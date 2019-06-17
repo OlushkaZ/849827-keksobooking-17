@@ -9,6 +9,9 @@ var Mock = {
 var appartments = [];
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
+var adForm = document.querySelector('.ad-form');
+var filterForm = document.querySelector('.map__filters');
+var mapPinMain = document.querySelector('.map__pin--main');
 
 var pinTemplate = document.querySelector('#pin')
     .content
@@ -60,6 +63,72 @@ var createFragment = function () {
   return fragment;
 };
 
-createMock();
-map.classList.remove('map--faded');
-pinList.appendChild(createFragment());
+var toggleActivForm = function (form, state) {
+  var formElements = form.querySelectorAll('select, fieldset');
+  for (var i = 0; i < formElements.length; i++) {
+    formElements[i].disabled = state;
+  }
+};
+
+var setInactivAdForm = function () {
+  adForm.classList.add('ad-form--disabled');
+  toggleActivForm(adForm, true);
+};
+
+var setActivAdForm = function () {
+  adForm.classList.remove('ad-form--disabled');
+  toggleActivForm(adForm, false);
+};
+
+var setInactivFilterForm = function () {
+  toggleActivForm(filterForm, true);
+};
+
+var setActivFilterForm = function () {
+  toggleActivForm(filterForm, false);
+};
+
+var setInactivState = function () {
+  map.classList.add('map--faded');
+  setInactivAdForm();
+  setInactivFilterForm();
+};
+
+var setActiveState = function () {
+  map.classList.remove('map--faded');
+  setActivAdForm();
+  setActivFilterForm();
+};
+
+var findChild = function (parent, childType) {
+  var notes = null;
+  for (var i = 0; i < parent.childNodes.length; i++) {
+    if (parent.childNodes[i].nodeName === childType) {
+      notes = parent.childNodes[i];
+      break;
+    }
+  }
+  return notes;
+};
+
+var calcCenterCoordinates = function (element) {
+  var elImg = findChild(element, 'IMG');
+  var xOffset = elImg ? elImg.width / 2 : 0;
+  var yOffset = elImg ? elImg.height / 2 : 0;
+  var x = parseInt(element.style.left.match(/\d+/), 10) + xOffset;
+  var y = parseInt(element.style.top.match(/\d+/), 10) + yOffset;
+  return {'x': x, 'y': y};
+};
+
+var setAddress = function () {
+  var adr = adForm.querySelector('#address');
+  var coordinates = calcCenterCoordinates(mapPinMain);
+  adr.value = coordinates.x + ', ' + coordinates.y;
+};
+
+setInactivState();
+setAddress();
+mapPinMain.addEventListener('click', setActiveState);
+mapPinMain.addEventListener('mouseup', setAddress);
+// createMock();
+// pinList.appendChild(createFragment());
