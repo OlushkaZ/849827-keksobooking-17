@@ -9,6 +9,11 @@ var Mock = {
 var appartments = [];
 var map = document.querySelector('.map');
 var pinList = map.querySelector('.map__pins');
+var adForm = document.querySelector('.ad-form');
+var filterForm = map.querySelector('.map__filters');
+var mapPinMain = map.querySelector('.map__pin--main');
+// var adFormElements = adForm.querySelectorAll('select, fieldset');
+// var filterFormElements = filterForm.querySelectorAll('select, fieldset');
 
 var pinTemplate = document.querySelector('#pin')
     .content
@@ -60,6 +65,71 @@ var createFragment = function () {
   return fragment;
 };
 
-createMock();
-map.classList.remove('map--faded');
-pinList.appendChild(createFragment());
+var toggleActiveForm = function (formElements) {
+  for (var i = 0; i < formElements.length; i++) {
+    formElements[i].disabled = !formElements[i].disabled;
+  }
+};
+
+var setInactivAdForm = function () {
+  adForm.classList.add('ad-form--disabled');
+  toggleActiveForm(adForm.children);
+};
+
+var setActivAdForm = function () {
+  adForm.classList.remove('ad-form--disabled');
+  toggleActiveForm(adForm.children);
+};
+
+var setInactivFilterForm = function () {
+  toggleActiveForm(filterForm.children);
+};
+
+var setActivFilterForm = function () {
+  toggleActiveForm(filterForm.children);
+};
+
+var setInactivState = function () {
+  map.classList.add('map--faded');
+  setInactivAdForm();
+  setInactivFilterForm();
+};
+
+var setActiveState = function () {
+  map.classList.remove('map--faded');
+  setActivAdForm();
+  setActivFilterForm();
+  createMock();
+  pinList.appendChild(createFragment());
+  mapPinMain.removeEventListener('click', setActiveState);
+};
+
+var findChild = function (parent, childType) {
+  var notes = null;
+  for (var i = 0; i < parent.childNodes.length; i++) {
+    if (parent.childNodes[i].nodeName === childType) {
+      notes = parent.childNodes[i];
+      break;
+    }
+  }
+  return notes;
+};
+
+var calcCenterCoordinates = function (element) {
+  var elImg = findChild(element, 'IMG');
+  var xOffset = elImg ? elImg.width / 2 : 0;
+  var yOffset = elImg ? elImg.height / 2 : 0;
+  return {'x': parseInt(element.style.left, 10) + xOffset,
+    'y': parseInt(element.style.top, 10) + yOffset};
+};
+
+var setAddress = function () {
+  var adr = adForm.querySelector('#address');
+  var coordinates = calcCenterCoordinates(mapPinMain);
+  adr.value = coordinates.x + ', ' + coordinates.y;
+};
+
+setInactivState();
+setAddress();
+mapPinMain.addEventListener('click', setActiveState);
+mapPinMain.addEventListener('mouseup', setAddress);
