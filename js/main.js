@@ -12,6 +12,8 @@ var pinList = map.querySelector('.map__pins');
 var adForm = document.querySelector('.ad-form');
 var filterForm = map.querySelector('.map__filters');
 var mapPinMain = map.querySelector('.map__pin--main');
+// var adFormElements = adForm.querySelectorAll('select, fieldset');
+// var filterFormElements = filterForm.querySelectorAll('select, fieldset');
 
 var pinTemplate = document.querySelector('#pin')
     .content
@@ -63,29 +65,28 @@ var createFragment = function () {
   return fragment;
 };
 
-var toggleActiveForm = function (form, state) {
-  var formElements = form.querySelectorAll('select, fieldset');
+var toggleActiveForm = function (formElements) {
   for (var i = 0; i < formElements.length; i++) {
-    formElements[i].disabled = state;
+    formElements[i].disabled = !formElements[i].disabled;
   }
 };
 
 var setInactivAdForm = function () {
   adForm.classList.add('ad-form--disabled');
-  toggleActiveForm(adForm, true);
+  toggleActiveForm(adForm.children);
 };
 
 var setActivAdForm = function () {
   adForm.classList.remove('ad-form--disabled');
-  toggleActiveForm(adForm, false);
+  toggleActiveForm(adForm.children);
 };
 
 var setInactivFilterForm = function () {
-  toggleActiveForm(filterForm, true);
+  toggleActiveForm(filterForm.children);
 };
 
 var setActivFilterForm = function () {
-  toggleActiveForm(filterForm, false);
+  toggleActiveForm(filterForm.children);
 };
 
 var setInactivState = function () {
