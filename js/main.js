@@ -1,6 +1,7 @@
 'use strict';
 
 var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var APPARTMENT_PRICE = [10000, 1000, 5000, 0];
 var Mock = {
   countElements: 8,
   minY: 130,
@@ -12,8 +13,24 @@ var pinList = map.querySelector('.map__pins');
 var adForm = document.querySelector('.ad-form');
 var filterForm = map.querySelector('.map__filters');
 var mapPinMain = map.querySelector('.map__pin--main');
-// var adFormElements = adForm.querySelectorAll('select, fieldset');
+var typeSelect = adForm.querySelector('#type');
+var priceInput = adForm.querySelector('#price');
+var timeSelect = adForm.querySelector('.ad-form__element--time');
 // var filterFormElements = filterForm.querySelectorAll('select, fieldset');
+
+typeSelect.addEventListener('change', function (evt) {
+  var index = APPARTMENT_TYPES.indexOf(evt.target.value);
+  priceInput.min = APPARTMENT_PRICE[index];
+  priceInput.placeholder = APPARTMENT_PRICE[index];
+});
+
+timeSelect.addEventListener('change', function (evt) {
+  if (evt.target === timeSelect.elements[0]) {
+    timeSelect.elements[1].value = timeSelect.elements[0].value;
+  } else {
+    timeSelect.elements[0].value = timeSelect.elements[1].value;
+  }
+});
 
 var pinTemplate = document.querySelector('#pin')
     .content
