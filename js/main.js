@@ -125,13 +125,13 @@ var setActiveState = function () {
 };
 
 var calcCenterCoordinates = function (element) {
-  return {'x': parseInt(element.style.left, 10) + element.offsetWidth / 2,
-    'y': parseInt(element.style.top, 10) + element.offsetHeight / 2};
+  return {'x': parseInt(element.style.left, 10) + Math.round(element.offsetWidth / 2),
+    'y': parseInt(element.style.top, 10) + Math.round(element.offsetHeight / 2)};
 };
 
 var calcPointerCoordinates = function (element) {
-  return {'x': parseInt(element.style.left, 10) + element.offsetWidth / 2,
-    'y': parseInt(element.style.top, 10) + element.offsetHeight};
+  return {'x': parseInt(element.style.left, 10) + Math.round(element.offsetWidth / 2),
+    'y': parseInt(element.style.top, 10) + Math.round(element.offsetHeight)};
 };
 
 var setAddress = function (coordinates) {
