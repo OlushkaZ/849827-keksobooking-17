@@ -22,7 +22,6 @@ var mapPinMain = map.querySelector('.map__pin--main');
 var typeSelect = adForm.querySelector('#type');
 var priceInput = adForm.querySelector('#price');
 var timeSelect = adForm.querySelector('.ad-form__element--time');
-// var startCoords;
 var pinTemplate = document.querySelector('#pin')
 .content
 .querySelector('.map__pin');
@@ -135,14 +134,6 @@ var calcCenterCoordinates = function (element) {
     'y': parseInt(element.style.top, 10) + Math.round(element.offsetHeight / 2)};
 };
 
-// var calcPointerCoordinates = function (element) {
-//   element = element.tagName === 'IMG' ? element.parentElement : element;
-//   var x = parseInt(element.style.left, 10);
-//   var y = parseInt(element.style.top, 10);
-//   return {'x': (x ? x : 0) + Math.round(element.offsetWidth / 2),
-//     'y': (y ? y : 0) + Math.round(element.offsetHeight)};
-// };
-
 var setAddress = function () {
   var adr = adForm.querySelector('#address');
   adr.value = (parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(mapPinMain.style.top, 10) + Math.round(mapPinMain.offsetHeight));
@@ -190,8 +181,6 @@ var onPinMouseDown = function (evt) {
   };
 
   var onMouseMove = function (moveEvt) {
-    console.log(moveEvt.clientX);
-    console.log(moveEvt.clientY);
     moveEvt.preventDefault();
     if ((moveEvt.pageX > mapBounders.left) && (moveEvt.pageX < mapBounders.right) && (moveEvt.pageY > mapBounders.top) && (moveEvt.pageY < mapBounders.bottom)) {
       setNewCoordinates(moveEvt);
