@@ -4,7 +4,6 @@
   var map = document.querySelector('.map');
   var filterForm = map.querySelector('.map__filters');
   var mapPinMain = map.querySelector('.map__pin--main');
-  var pinList = map.querySelector('.map__pins');
   var mapBounders = {
     left: map.offsetLeft,
     right: map.offsetLeft + map.offsetWidth,
@@ -49,8 +48,7 @@
     map.classList.remove('map--faded');
     window.form.setActivAdForm();
     setActivFilterForm();
-    window.data.createMock();
-    pinList.appendChild(window.pin.createFragment());
+    window.pin.createPinList();
     mapPinMain.removeEventListener('mouseup', setActiveState);
   };
 
