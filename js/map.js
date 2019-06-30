@@ -2,7 +2,7 @@
 
 (function () {
   var map = document.querySelector('.map');
-  var filterForm = map.querySelector('.map__filters');
+
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapBounders = {
     left: map.offsetLeft,
@@ -18,37 +18,21 @@
   window.map = {
     map: map,
     mapBounders: mapBounders,
-    mapPinMain: mapPinMain
-  };
-
-  var setAddress = function () {
-    window.form.adr.value = (parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(mapPinMain.style.top, 10) + pinHeightWithTale);
-  };
-
-  var setStartAddress = function () {
-    window.form.adr.value = (parseInt(mapPinMain.style.left, 10) + Math.round(mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(mapPinMain.style.top, 10));
-  };
-
-  var setInactivFilterForm = function () {
-    window.util.toggleActiveForm(filterForm.children);
-  };
-
-  var setActivFilterForm = function () {
-    window.util.toggleActiveForm(filterForm.children);
+    mapPinMain: mapPinMain,
+    pinHeightWithTale: pinHeightWithTale
   };
 
   var setInactivState = function () {
     map.classList.add('map--faded');
     window.form.setInactivAdForm();
-    setInactivFilterForm();
+    window.filterForm.setInactivFilterForm();
     mapPinMain.addEventListener('mouseup', setActiveState);
   };
 
   var setActiveState = function () {
     map.classList.remove('map--faded');
     window.form.setActivAdForm();
-    setActivFilterForm();
-    window.pin.createPinList();
+    window.filterForm.setActivFilterForm();
     mapPinMain.removeEventListener('mouseup', setActiveState);
   };
 
@@ -68,7 +52,7 @@
   };
 
   setInactivState();
-  setStartAddress();
+  window.form.setStartAddress();
 
   var onPinMouseDown = function (evt) {
     evt.preventDefault();
@@ -98,14 +82,14 @@
       if ((moveEvt.pageX > mapBounders.left) && (moveEvt.pageX < mapBounders.right) && (moveEvt.pageY > mapBounders.top) && (moveEvt.pageY < mapBounders.bottom)) {
         setNewCoordinates(moveEvt);
         correctCoordinates();
-        setAddress();
+        window.form.setAddress();
       }
     };
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
       correctCoordinates();
-      setAddress();
+      window.form.setAddress();
 
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);

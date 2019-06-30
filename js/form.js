@@ -31,9 +31,18 @@
     window.util.toggleActiveForm(adForm.children);
   };
 
+  var setAddress = function () {
+    adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10) + window.map.pinHeightWithTale);
+  };
+
+  var setStartAddress = function () {
+    adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
+  };
+
   window.form = {
     setInactivAdForm: setInactivAdForm,
     setActivAdForm: setActivAdForm,
-    adr: adr
+    setAddress: setAddress,
+    setStartAddress: setStartAddress
   };
 })();
