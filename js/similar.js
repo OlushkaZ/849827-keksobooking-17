@@ -37,5 +37,8 @@
     main.insertAdjacentElement('afterbegin', errorElement);
   };
 
-  window.load(successHandler, errorHandler);
+  window.similar = {
+    successHandler: successHandler,
+    errorHandler: errorHandler
+  };
 })();

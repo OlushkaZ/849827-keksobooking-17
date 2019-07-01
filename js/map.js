@@ -88,6 +88,7 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
+      window.load(window.similar.successHandler, window.similar.errorHandler);
       correctCoordinates();
       window.form.setAddress();
 
