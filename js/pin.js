@@ -34,5 +34,6 @@
       fragment.appendChild(renderPin(data[i]));
     }
     pinList.appendChild(fragment);
+    window.renderOffer(data);
   };
 })();
