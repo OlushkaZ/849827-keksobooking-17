@@ -3,6 +3,7 @@
 
   var map = document.querySelector('.map');
   var filter = map.querySelector('.map__filters-container');
+  var ESCAPE_CODE = 27;
   var cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -83,8 +84,29 @@
     return cardElement;
   };
 
+  var escHandler = function (evt) {
+    if (evt.keyCode === ESCAPE_CODE) {
+      var card = map.querySelector('.map__card');
+      if (card) {
+        map.removeChild(card);
+        document.removeEventListener('keydown', escHandler);
+      }
+    }
+  };
+
   window.renderOffer = function (data) {
-    map.insertBefore(renderCard(data[0]), filter);
+    var card = map.querySelector('.map__card');
+    if (card) {
+      map.removeChild(card);
+    }
+    map.insertBefore(renderCard(data), filter);
+    card = map.querySelector('.map__card');
+    var closeButton = map.querySelector('.popup__close');
+    closeButton.addEventListener('click', function () {
+      map.removeChild(card);
+      document.removeEventListener('keydown', escHandler);
+    });
+    document.addEventListener('keydown', escHandler);
   };
 
 })();

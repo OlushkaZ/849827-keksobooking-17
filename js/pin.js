@@ -2,6 +2,7 @@
 (function () {
   var pinCount = 5;
   var pinList = document.querySelector('.map').querySelector('.map__pins');
+  var startPosOffers = 2;
 
 
   var pinTemplate = document.querySelector('#pin')
@@ -13,7 +14,7 @@
     y: pinTemplate.querySelector('img').height
   };
 
-  var renderPin = function (pin) {
+  var renderPinItem = function (pin) {
     var pinElement = pinTemplate.cloneNode(true);
     var pinImg = pinElement.querySelector('img');
     pinImg.src = pin.author.avatar;
@@ -24,16 +25,18 @@
     return pinElement;
   };
 
-  window.render = function (data) {
-    while (pinList.children.length > 2) {
+  window.renderPins = function (data) {
+    while (pinList.children.length > startPosOffers) {
       pinList.removeChild(pinList.lastChild);
     }
     var takeNumber = data.length > pinCount ? pinCount : data.length;
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < takeNumber; i++) {
-      fragment.appendChild(renderPin(data[i]));
+      fragment.appendChild(renderPinItem(data[i]));
     }
     pinList.appendChild(fragment);
-    window.renderOffer(data);
+    Array.from(pinList.children).slice(startPosOffers).forEach(function (pinItem, num) {
+      pinItem.addEventListener('click', window.renderOffer.bind({}, data[num]));
+    });
   };
 })();
