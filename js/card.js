@@ -48,9 +48,9 @@
     newImg.src = source;
     return newImg;
   };
-
+  var startSymbol = '--';
   var hideFeature = function (item, arr) {
-    if (arr.indexOf(item.classList[1].slice(item.classList[1].indexOf('--') + 2)) === -1) {
+    if (arr.indexOf(item.classList[1].slice(item.classList[1].indexOf(startSymbol) + startSymbol.length)) === -1) {
       item.classList.add('visually-hidden');
     }
   };
@@ -68,17 +68,17 @@
 
     var cardPhoto = cardElement.querySelector('.popup__photos');
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < offer.offer.photos.length; i++) {
-      fragment.appendChild(renderPhoto(cardPhoto, offer.offer.photos[i]));
-    }
+    offer.offer.photos.forEach(function (photo) {
+      fragment.appendChild(renderPhoto(cardPhoto, photo));
+    });
     cardPhoto.removeChild(cardPhoto.firstElementChild);
     cardPhoto.appendChild(fragment);
 
     var cardFeatures = cardElement.querySelector('.popup__features');
     var featureItems = cardFeatures.querySelectorAll('.popup__feature');
-    for (var j = 0; j < featureItems.length; j++) {
-      hideFeature(featureItems[j], offer.offer.features);
-    }
+    featureItems.forEach(function (item) {
+      hideFeature(item, offer.offer.features);
+    });
 
     return cardElement;
   };
