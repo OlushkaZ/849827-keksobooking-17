@@ -6,6 +6,51 @@
   var timeSelect = adForm.querySelector('.ad-form__element--time');
   var priceInput = adForm.querySelector('#price');
   var adr = adForm.querySelector('#address');
+  var capacitySelect = adForm.querySelector('#capacity');
+  var roomNumberSelect = adForm.querySelector('#room_number');
+
+  var CustomValidation = function () { };
+  CustomValidation.prototype = {
+    invalidities: [],
+    checkValidityCapacity: function (capacity, roomNumber) {
+      if ((roomNumber.value === '100' && capacity.value !== '0') || (roomNumber.value !== '100' && capacity.value === '0')) {
+        this.addInvalidity('Количество мест \'не для гостей\' соответствует количеству комнат \'100\'');
+      } else if (capacity.value > roomNumber.value) {
+        this.addInvalidity('Количество гостей превышает количество комнат');
+
+        switch (roomNumber.value) {
+          case '1':
+            this.addInvalidity('В одной комнате может разметиться только один гость');
+            return;
+          case '2':
+            this.addInvalidity('В двух комнатах может разместить один или два гостя');
+            return;
+          default:
+            throw new Error('Неизвестное колиество комнат: «' + roomNumber + '»');
+        }
+      }
+    },
+    addInvalidity: function (message) {
+      this.invalidities.push(message);
+    },
+    getInvalidities: function () {
+      return this.invalidities.join('. \n');
+    }
+  };
+
+  var capacityHendler = function () {
+    var inputCustomValidation = new CustomValidation();
+    inputCustomValidation.invalidities = [];
+    capacitySelect.setCustomValidity('');
+    inputCustomValidation.checkValidityCapacity(capacitySelect, roomNumberSelect); // Выявим ошибки
+    var customValidityMessage = inputCustomValidation.getInvalidities(); // Получим все сообщения об ошибках
+    if (customValidityMessage) {
+      capacitySelect.setCustomValidity(customValidityMessage);
+    }
+  };
+
+  capacitySelect.addEventListener('change', capacityHendler);
+  roomNumberSelect.addEventListener('change', capacityHendler);
 
   typeSelect.addEventListener('change', function (evt) {
     var index = window.data.APPARTMENT_TYPES.indexOf(evt.target.value);
