@@ -15,19 +15,21 @@
   ).getPropertyValue('border-top-width'), 10);
   var pinHeightWithTale = mapPinMain.offsetHeight + taleSize;
 
-  window.map = {
-    map: map,
-    mapBounders: mapBounders,
-    mapPinMain: mapPinMain,
-    pinHeightWithTale: pinHeightWithTale
-  };
-
   var setInactivState = function () {
     map.classList.add('map--faded');
     window.form.setInactivAdForm();
     window.filterForm.setInactivFilterForm();
     mapPinMain.addEventListener('mouseup', setActiveState);
   };
+
+  window.map = {
+    map: map,
+    mapBounders: mapBounders,
+    mapPinMain: mapPinMain,
+    pinHeightWithTale: pinHeightWithTale,
+    setInactivState: setInactivState
+  };
+
 
   var setActiveState = function () {
     map.classList.remove('map--faded');

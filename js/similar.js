@@ -16,7 +16,7 @@
 
   var appartmentsType = window.filterForm.typeSelect.value;
   var updateAppartments = function () {
-    window.renderPins(appartments
+    window.pin.renderPins(appartments
       .slice()
       .filter(filerFunction)
       .slice(0, 5));

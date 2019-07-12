@@ -8,8 +8,15 @@
   var adr = adForm.querySelector('#address');
   var capacitySelect = adForm.querySelector('#capacity');
   var roomNumberSelect = adForm.querySelector('#room_number');
+  var resetButton = adForm.querySelector('.ad-form__reset');
   var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
   var APPARTMENT_PRICE = [10000, 1000, 5000, 0];
+  var ESCAPE_CODE = 27;
+  var successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+  var successMessage = successTemplate.cloneNode(true);
+
   var ValidText = {
     GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'100\'',
     GUEST1: 'В одной комнате может разместиться только один гость',
@@ -92,6 +99,44 @@
   var setStartAddress = function () {
     adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
   };
+
+  resetButton.addEventListener('click', function (e) {
+    e.preventDefault();
+    adForm.reset();
+    typeSelect.dispatchEvent(new Event('change'));
+    setAddress();
+  });
+
+  // var successMessageDblckickHendler = function () {
+  //   adForm.removeChild(successMessage);
+  //   console.log('я даблклик');
+  //   document.removeEventListener('click', successMessageDblckickHendler);
+  //   document.removeEventListener('keydown', escHandler);
+  // };
+
+  var removeSuccessMessage = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+      adForm.removeChild(successMessage);
+      console.log('я ескейп');
+      document.removeEventListener('keydown', removeSuccessMessage);
+      document.removeEventListener('click', removeSuccessMessage);
+    }
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.upload(new FormData(adForm), function (response) {
+      console.log("успешно");
+      window.pin.refreshPinMain();
+      resetButton.dispatchEvent(new Event('click'));
+      window.pin.clearPins();
+      window.map.setInactivState();
+      adForm.appendChild(successMessage);
+      document.addEventListener('click', removeSuccessMessage);
+      document.addEventListener('keydown', removeSuccessMessage);
+    });
+    console.log("провал");
+    evt.preventDefault();
+  });
 
   window.form = {
     setInactivAdForm: setInactivAdForm,
