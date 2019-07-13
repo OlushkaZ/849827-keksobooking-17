@@ -104,7 +104,7 @@
     e.preventDefault();
     adForm.reset();
     typeSelect.dispatchEvent(new Event('change'));
-    setAddress();
+    setStartAddress();
   });
 
   // var successMessageDblckickHendler = function () {
