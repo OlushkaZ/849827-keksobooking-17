@@ -7,7 +7,7 @@
   var pinMainStart = {
     top: mapPinMain.style.top,
     left: mapPinMain.style.left
-  }
+  };
 
   var pinTemplate = document.querySelector('#pin')
   .content

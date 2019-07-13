@@ -16,6 +16,12 @@
   .content
   .querySelector('.success');
   var successMessage = successTemplate.cloneNode(true);
+  var errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+  var errorMessage = errorTemplate.cloneNode(true);
+  var errorButton = errorTemplate.querySelector('.error__button');
+  var main = document.querySelector('main');
 
   var ValidText = {
     GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'100\'',
@@ -107,34 +113,42 @@
     setStartAddress();
   });
 
-  // var successMessageDblckickHendler = function () {
-  //   adForm.removeChild(successMessage);
-  //   console.log('я даблклик');
-  //   document.removeEventListener('click', successMessageDblckickHendler);
-  //   document.removeEventListener('keydown', escHandler);
-  // };
-
   var removeSuccessMessage = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
       adForm.removeChild(successMessage);
-      console.log('я ескейп');
       document.removeEventListener('keydown', removeSuccessMessage);
       document.removeEventListener('click', removeSuccessMessage);
     }
   };
 
+  var successHendler = function () {
+    window.pin.refreshPinMain();
+    resetButton.dispatchEvent(new Event('click'));
+    window.pin.clearPins();
+    window.map.setInactivState();
+    adForm.appendChild(successMessage);
+    document.addEventListener('click', removeSuccessMessage);
+    document.addEventListener('keydown', removeSuccessMessage);
+  };
+
+  var removeErrorMessage = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+      main.removeChild(errorMessage);
+      document.removeEventListener('keydown', removeErrorMessage);
+      errorButton.removeEventListener('click', removeErrorMessage);
+      document.removeEventListener('click', removeErrorMessage);
+    }
+  };
+
+  var errorHendler = function () {
+    main.appendChild(errorMessage);
+    document.addEventListener('click', removeErrorMessage);
+    errorButton.addEventListener('click', removeErrorMessage);
+    document.addEventListener('keydown', removeErrorMessage);
+  };
+
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), function (response) {
-      console.log("успешно");
-      window.pin.refreshPinMain();
-      resetButton.dispatchEvent(new Event('click'));
-      window.pin.clearPins();
-      window.map.setInactivState();
-      adForm.appendChild(successMessage);
-      document.addEventListener('click', removeSuccessMessage);
-      document.addEventListener('keydown', removeSuccessMessage);
-    });
-    console.log("провал");
+    window.upload(new FormData(adForm), successHendler, errorHendler);
     evt.preventDefault();
   });
 
