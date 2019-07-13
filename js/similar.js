@@ -26,6 +26,8 @@
         return it.offer.price < 10000;
       case 'high':
         return it.offer.price > 50000;
+      default:
+        throw new Error('Неизвестный диапазон цен' + appartmentsPrice);
     }
   };
 
