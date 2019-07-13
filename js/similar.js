@@ -6,7 +6,8 @@
   .content
   .querySelector('.error');
 
-  var filerFunction = function (it) {
+  var checktType = function (it) {
+    var appartmentsType = window.filterForm.typeSelect.value;
     if (appartmentsType === 'any') {
       return true;
     } else {
@@ -14,7 +15,24 @@
     }
   };
 
-  var appartmentsType = window.filterForm.typeSelect.value;
+  var checkPrice = function (it) {
+    var appartmentsPrice = window.filterForm.priceSelect.value;
+    switch (appartmentsPrice) {
+      case 'any':
+        return true;
+      case 'middle':
+        return it.offer.price >= 10000 && it.offer.price <= 50000;
+      case 'low':
+        return it.offer.price < 10000;
+      case 'high':
+        return it.offer.price > 50000;
+    }
+  };
+
+  var filerFunction = function (it) {
+    return checktType(it) && checkPrice(it);
+  };
+
   var updateAppartments = function () {
     window.pin.renderPins(appartments
       .slice()
@@ -22,10 +40,10 @@
       .slice(0, 5));
   };
 
-  window.filterForm.onHousingTypeChange = window.debounce(function (type) {
-    appartmentsType = type;
-    updateAppartments();
-  });
+  // window.filterForm.onHousingTypeChange = window.debounce(function (type) {
+  //   // appartmentsType = type;
+  //   updateAppartments();
+  // });
 
   var successHandler = function (data) {
     appartments = data;
@@ -39,6 +57,7 @@
 
   window.similar = {
     successHandler: successHandler,
-    errorHandler: errorHandler
+    errorHandler: errorHandler,
+    updateAppartments: updateAppartments
   };
 })();

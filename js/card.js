@@ -94,19 +94,28 @@
     }
   };
 
-  window.renderOffer = function (data) {
+  var removeCard = function () {
     var card = map.querySelector('.map__card');
     if (card) {
       map.removeChild(card);
     }
+  };
+
+  var renderOffer = function (data) {
+    removeCard();
     map.insertBefore(renderCard(data), filter);
-    card = map.querySelector('.map__card');
+    var card = map.querySelector('.map__card');
     var closeButton = map.querySelector('.popup__close');
     closeButton.addEventListener('click', function () {
       map.removeChild(card);
       document.removeEventListener('keydown', escHandler);
     });
     document.addEventListener('keydown', escHandler);
+  };
+
+  window.card = {
+    renderOffer: renderOffer,
+    removeCard: removeCard
   };
 
 })();

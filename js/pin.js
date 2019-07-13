@@ -27,7 +27,7 @@
     pinElement.style.top = pin.location.y - pinOffset.y + 'px';
 
     pinElement.addEventListener('click', function () {
-      window.renderOffer(pin);
+      window.card.renderOffer(pin);
     });
 
     return pinElement;
