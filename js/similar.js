@@ -42,11 +42,6 @@
       .slice(0, 5));
   };
 
-  // window.filterForm.onHousingTypeChange = window.debounce(function (type) {
-  //   // appartmentsType = type;
-  //   updateAppartments();
-  // });
-
   var successHandler = function (data) {
     appartments = data;
     updateAppartments();

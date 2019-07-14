@@ -24,11 +24,6 @@
     window.card.removeCard();
   });
 
-  // priceSelect.addEventListener('change', function (evt) {
-  //   window.filterForm.onHousingTypeChange(evt.target.value);
-  //   window.card.removeCard();
-  // });
-
   priceSelect.addEventListener('change', function () {
     window.debounce(function () {
       window.similar.updateAppartments();
@@ -36,12 +31,17 @@
     window.card.removeCard();
   });
 
+  var filterReset = function () {
+    filterForm.reset();
+  };
+
   window.filterForm = {
     setInactivFilterForm: setInactivFilterForm,
     setActivFilterForm: setActivFilterForm,
     onHousingTypeChange: onHousingTypeChange,
     typeSelect: typeSelect,
-    priceSelect: priceSelect
+    priceSelect: priceSelect,
+    filterReset: filterReset
   };
 
 })();

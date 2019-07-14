@@ -109,24 +109,27 @@
   resetButton.addEventListener('click', function (e) {
     e.preventDefault();
     adForm.reset();
+    window.pin.refreshPinMain();
+    window.pin.clearPins();
+    window.map.setInactivState();
+    window.card.removeCard();
     typeSelect.dispatchEvent(new Event('change'));
+    window.filterForm.filterReset();
     setStartAddress();
   });
 
   var removeSuccessMessage = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
-      adForm.removeChild(successMessage);
+      main.removeChild(successMessage);
       document.removeEventListener('keydown', removeSuccessMessage);
       document.removeEventListener('click', removeSuccessMessage);
     }
   };
 
   var successHendler = function () {
-    window.pin.refreshPinMain();
     resetButton.dispatchEvent(new Event('click'));
-    window.pin.clearPins();
-    window.map.setInactivState();
-    adForm.appendChild(successMessage);
+
+    main.appendChild(successMessage);
     document.addEventListener('click', removeSuccessMessage);
     document.addEventListener('keydown', removeSuccessMessage);
   };
