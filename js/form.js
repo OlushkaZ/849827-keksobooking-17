@@ -114,7 +114,7 @@
     window.pin.refreshPinMain();
     window.pin.clearPins();
     window.map.setInactivState();
-    window.card.removeCard();
+    window.card.remove();
     typeSelect.dispatchEvent(new Event('change'));
     window.filterForm.filterReset();
     setStartAddress();

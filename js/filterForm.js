@@ -21,14 +21,14 @@
     window.debounce(function () {
       window.similar.updateAppartments();
     })();
-    window.card.removeCard();
+    window.card.remove();
   });
 
   priceSelect.addEventListener('change', function () {
     window.debounce(function () {
       window.similar.updateAppartments();
     })();
-    window.card.removeCard();
+    window.card.remove();
   });
 
   var filterReset = function () {

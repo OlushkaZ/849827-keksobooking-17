@@ -25,9 +25,9 @@
 
   var formatNumber = function (num, str, var1, var2, var3) {
     num = Math.floor(num);
-    var arr = num.toString().split('');
-    var lastDig = parseInt(arr.pop(), 10);
-    var preLastDig = parseInt(arr.pop(), 10);
+    var numbers = num.toString().split('');
+    var lastDig = parseInt(numbers.pop(), 10);
+    var preLastDig = parseInt(numbers.pop(), 10);
 
     if ((preLastDig === 1) || ((lastDig === 0) || (lastDig >= 5 && lastDig <= 9))) {
       return num + ' ' + str + var1;
@@ -50,8 +50,8 @@
     return newImg;
   };
   var startSymbol = '--';
-  var hideFeature = function (item, arr) {
-    if (arr.indexOf(item.classList[1].slice(item.classList[1].indexOf(startSymbol) + startSymbol.length)) === -1) {
+  var hideFeature = function (item, features) {
+    if (features.indexOf(item.classList[1].slice(item.classList[1].indexOf(startSymbol) + startSymbol.length)) === -1) {
       item.classList.add('visually-hidden');
     }
   };
@@ -114,8 +114,8 @@
   };
 
   window.card = {
-    renderOffer: renderOffer,
-    removeCard: removeCard
+    render: renderOffer,
+    remove: removeCard
   };
 
 })();
