@@ -151,7 +151,7 @@
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.upload(new FormData(adForm), successHendler, errorHendler);
+    window.backend.save(successHendler, errorHendler, new FormData(adForm));
     evt.preventDefault();
   });
 

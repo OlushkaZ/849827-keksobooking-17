@@ -92,7 +92,7 @@
       upEvt.preventDefault();
       if (flagInactivState) {
         setActiveState();
-        window.load(window.similar.successHandler, window.similar.errorHandler);
+        window.backend.load(window.similar.successHandler, window.similar.errorHandler);
       }
       correctCoordinates();
       window.form.setAddress();
