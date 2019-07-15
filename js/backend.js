@@ -1,12 +1,13 @@
 'use strict';
 
 (function () {
-  var URL = 'https://js.dump.academy/keksobooking/data';
+  var URL_LOAD = 'https://js.dump.academy/keksobooking/data';
+  var URL_UPLOAD = 'https://js.dump.academy/keksobooking';
   var Code = {
     SUCCESS: 200
   };
 
-  window.load = function (onSuccess, onError) {
+  var request = function (onSuccess, onError, data) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -23,8 +24,17 @@
     xhr.addEventListener('timeout', function () {
       onError();
     });
+    if (data) {
+      xhr.open('POST', URL_UPLOAD);
+      xhr.send(data);
+    } else {
+      xhr.open('GET', URL_LOAD);
+      xhr.send();
+    }
+  };
 
-    xhr.open('GET', URL);
-    xhr.send();
+  window.backend = {
+    load: request,
+    save: request
   };
 })();

@@ -2,7 +2,7 @@
 
 (function () {
   var map = document.querySelector('.map');
-
+  var flagInactivState;
   var mapPinMain = map.querySelector('.map__pin--main');
   var mapBounders = {
     left: map.offsetLeft,
@@ -10,30 +10,32 @@
     top: map.offsetTop,
     bottom: map.offsetTop + map.offsetHeight - map.querySelector('.map__filters-container').offsetHeight
   };
+
   var taleSize = parseInt(window.getComputedStyle(
       document.querySelector('.map__pin--main'), ':after'
   ).getPropertyValue('border-top-width'), 10);
   var pinHeightWithTale = mapPinMain.offsetHeight + taleSize;
 
+  var setInactivState = function () {
+    flagInactivState = true;
+    map.classList.add('map--faded');
+    window.form.setInactivAdForm();
+    window.filterForm.setInactivFilterForm();
+  };
+
   window.map = {
     map: map,
     mapBounders: mapBounders,
     mapPinMain: mapPinMain,
-    pinHeightWithTale: pinHeightWithTale
-  };
-
-  var setInactivState = function () {
-    map.classList.add('map--faded');
-    window.form.setInactivAdForm();
-    window.filterForm.setInactivFilterForm();
-    mapPinMain.addEventListener('mouseup', setActiveState);
+    pinHeightWithTale: pinHeightWithTale,
+    setInactivState: setInactivState
   };
 
   var setActiveState = function () {
     map.classList.remove('map--faded');
     window.form.setActivAdForm();
     window.filterForm.setActivFilterForm();
-    mapPinMain.removeEventListener('mouseup', setActiveState);
+    flagInactivState = false;
   };
 
   var correctCoordinates = function () {
@@ -88,10 +90,12 @@
 
     var onMouseUp = function (upEvt) {
       upEvt.preventDefault();
-      window.load(window.similar.successHandler, window.similar.errorHandler);
+      if (flagInactivState) {
+        setActiveState();
+        window.backend.load(window.similar.successHandler, window.similar.errorHandler);
+      }
       correctCoordinates();
       window.form.setAddress();
-
       document.removeEventListener('mousemove', onMouseMove);
       document.removeEventListener('mouseup', onMouseUp);
     };

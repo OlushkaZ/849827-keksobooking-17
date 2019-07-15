@@ -8,8 +8,23 @@
   var adr = adForm.querySelector('#address');
   var capacitySelect = adForm.querySelector('#capacity');
   var roomNumberSelect = adForm.querySelector('#room_number');
-  var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
-  var APPARTMENT_PRICE = [10000, 1000, 5000, 0];
+  var resetButton = adForm.querySelector('.ad-form__reset');
+  var appartments = {
+    APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
+    APPARTMENT_PRICE: [10000, 1000, 5000, 0]
+  };
+  var ESCAPE_CODE = 27;
+  var successTemplate = document.querySelector('#success')
+  .content
+  .querySelector('.success');
+  var successMessage = successTemplate.cloneNode(true);
+  var errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
+  var errorMessage = errorTemplate.cloneNode(true);
+  var errorButton = errorTemplate.querySelector('.error__button');
+  var main = document.querySelector('main');
+
   var ValidText = {
     GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'100\'',
     GUEST1: 'В одной комнате может разместиться только один гость',
@@ -62,9 +77,9 @@
   roomNumberSelect.addEventListener('change', capacityHandler);
 
   typeSelect.addEventListener('change', function (evt) {
-    var index = APPARTMENT_TYPES.indexOf(evt.target.value);
-    priceInput.min = APPARTMENT_PRICE[index];
-    priceInput.placeholder = APPARTMENT_PRICE[index];
+    var index = appartments.APPARTMENT_TYPES.indexOf(evt.target.value);
+    priceInput.min = appartments.APPARTMENT_PRICE[index];
+    priceInput.placeholder = appartments.APPARTMENT_PRICE[index];
   });
 
   timeSelect.addEventListener('change', function (evt) {
@@ -92,6 +107,55 @@
   var setStartAddress = function () {
     adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
   };
+
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+    window.pin.refreshPinMain();
+    window.pin.clearPins();
+    window.map.setInactivState();
+    window.card.remove();
+    typeSelect.dispatchEvent(new Event('change'));
+    window.filterForm.filterReset();
+    setStartAddress();
+  });
+
+  var removeSuccessMessage = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+      main.removeChild(successMessage);
+      document.removeEventListener('keydown', removeSuccessMessage);
+      document.removeEventListener('click', removeSuccessMessage);
+    }
+  };
+
+  var successHendler = function () {
+    resetButton.dispatchEvent(new Event('click'));
+
+    main.appendChild(successMessage);
+    document.addEventListener('click', removeSuccessMessage);
+    document.addEventListener('keydown', removeSuccessMessage);
+  };
+
+  var removeErrorMessage = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+      main.removeChild(errorMessage);
+      document.removeEventListener('keydown', removeErrorMessage);
+      errorButton.removeEventListener('click', removeErrorMessage);
+      document.removeEventListener('click', removeErrorMessage);
+    }
+  };
+
+  var errorHendler = function () {
+    main.appendChild(errorMessage);
+    document.addEventListener('click', removeErrorMessage);
+    errorButton.addEventListener('click', removeErrorMessage);
+    document.addEventListener('keydown', removeErrorMessage);
+  };
+
+  adForm.addEventListener('submit', function (evt) {
+    window.backend.save(successHendler, errorHendler, new FormData(adForm));
+    evt.preventDefault();
+  });
 
   window.form = {
     setInactivAdForm: setInactivAdForm,
