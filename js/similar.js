@@ -11,7 +11,7 @@
   .querySelector('.error');
 
   var checktType = function (it) {
-    var appartmentsType = window.filterForm.typeSelect.value;
+    var appartmentsType = document.querySelector('#housing-type').value;
     if (appartmentsType === 'any') {
       return true;
     } else {
@@ -20,7 +20,7 @@
   };
 
   var checkPrice = function (it) {
-    var appartmentsPrice = window.filterForm.priceSelect.value;
+    var appartmentsPrice = document.querySelector('#housing-price').value;
     switch (appartmentsPrice) {
       case 'any':
         return true;
@@ -35,8 +35,52 @@
     }
   };
 
+  var checkRoomNumber = function (it) {
+    var roomNumber = document.querySelector('#housing-rooms').value;
+    if (roomNumber === 'any') {
+      return true;
+    } else {
+      return parseInt(roomNumber, 10) === it.offer.rooms;
+    }
+  };
+
+  var checkGuestNumber = function (it) {
+    var guestNumber = document.querySelector('#housing-guests').value;
+    if (guestNumber === 'any') {
+      return true;
+    } else {
+      return parseInt(guestNumber, 10) === it.offer.guests;
+    }
+  };
+
+  var checkWifi = function (it) {
+    var wifi = document.querySelector('#filter-wifi').checked;
+    if (!wifi) {
+      return true;
+    } else {
+      return it.offer.features.indexOf('wifi') >= 0;
+    }
+  };
+  var checkDishwasher = function (it) {
+    var dishwasher = document.querySelector('#filter-dishwasher').checked;
+    if (!dishwasher) {
+      return true;
+    } else {
+      return it.offer.features.indexOf('dishwasher') >= 0;
+    }
+  };
+  var checkParking = function (it) {
+    var parking = document.querySelector('#filter-parking').checked;
+    if (!parking) {
+      return true;
+    } else {
+      return it.offer.features.indexOf('parking') >= 0;
+    }
+  };
+
   var filerFunction = function (it) {
-    return checktType(it) && checkPrice(it);
+    return checktType(it) && checkPrice(it) && checkRoomNumber(it) && checkGuestNumber(it)
+    && checkWifi(it) && checkDishwasher(it) && checkParking(it);
   };
 
   var updateAppartments = function () {
