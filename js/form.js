@@ -108,8 +108,8 @@
     adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
   };
 
-  resetButton.addEventListener('click', function (e) {
-    e.preventDefault();
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
     adForm.reset();
     window.pin.refreshPinMain();
     window.pin.clearPins();
