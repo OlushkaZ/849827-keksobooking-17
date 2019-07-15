@@ -9,8 +9,10 @@
   var capacitySelect = adForm.querySelector('#capacity');
   var roomNumberSelect = adForm.querySelector('#room_number');
   var resetButton = adForm.querySelector('.ad-form__reset');
-  var APPARTMENT_TYPES = ['palace', 'flat', 'house', 'bungalo'];
-  var APPARTMENT_PRICE = [10000, 1000, 5000, 0];
+  var appartments = {
+    APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
+    APPARTMENT_PRICE: [10000, 1000, 5000, 0]
+  };
   var ESCAPE_CODE = 27;
   var successTemplate = document.querySelector('#success')
   .content
@@ -75,9 +77,9 @@
   roomNumberSelect.addEventListener('change', capacityHandler);
 
   typeSelect.addEventListener('change', function (evt) {
-    var index = APPARTMENT_TYPES.indexOf(evt.target.value);
-    priceInput.min = APPARTMENT_PRICE[index];
-    priceInput.placeholder = APPARTMENT_PRICE[index];
+    var index = appartments.APPARTMENT_TYPES.indexOf(evt.target.value);
+    priceInput.min = appartments.APPARTMENT_PRICE[index];
+    priceInput.placeholder = appartments.APPARTMENT_PRICE[index];
   });
 
   timeSelect.addEventListener('change', function (evt) {

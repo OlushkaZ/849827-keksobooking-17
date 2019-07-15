@@ -1,6 +1,10 @@
 'use strict';
 (function () {
   var appartments = [];
+  var PriceBound = {
+    LOW_BOUND: 10000,
+    HIGH_BOUND: 50000
+  };
   var main = document.querySelector('main');
   var errorTemplate = document.querySelector('#error')
   .content
@@ -21,11 +25,11 @@
       case 'any':
         return true;
       case 'middle':
-        return it.offer.price >= 10000 && it.offer.price <= 50000;
+        return it.offer.price >= PriceBound.LOW_BOUND && it.offer.price <= PriceBound.HIGH_BOUND;
       case 'low':
-        return it.offer.price < 10000;
+        return it.offer.price < PriceBound.LOW_BOUND;
       case 'high':
-        return it.offer.price > 50000;
+        return it.offer.price > PriceBound.HIGH_BOUND;
       default:
         throw new Error('Неизвестный диапазон цен' + appartmentsPrice);
     }
