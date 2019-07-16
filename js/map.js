@@ -28,7 +28,7 @@
     flagInactivState = true;
     map.classList.add('map--faded');
     window.form.setInactivAdForm();
-    window.filterForm.setInactivFilterForm();
+    window.filterForm.toggleActiveFilterForm();
   };
 
   window.map = {
@@ -43,7 +43,7 @@
   var setActiveState = function () {
     map.classList.remove('map--faded');
     window.form.setActivAdForm();
-    window.filterForm.setActivFilterForm();
+    window.filterForm.toggleActiveFilterForm();
     flagInactivState = false;
   };
 
