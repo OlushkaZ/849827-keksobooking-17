@@ -10,6 +10,9 @@
   .content
   .querySelector('.error');
 
+  var features = document.querySelector('.map__filters').querySelectorAll('input');
+  var checkedFeatures = [];
+
   var checktType = function (it) {
     var appartmentsType = document.querySelector('#housing-type').value;
     if (appartmentsType === 'any') {
@@ -35,55 +38,36 @@
     }
   };
 
-  var checkRoomNumber = function (it) {
-    var roomNumber = document.querySelector('#housing-rooms').value;
-    if (roomNumber === 'any') {
+  var checkNumber = function (it, item) {
+    var itemNumber = document.querySelector('#housing-' + item).value;
+    if (itemNumber === 'any') {
       return true;
     } else {
-      return parseInt(roomNumber, 10) === it.offer.rooms;
+      return parseInt(itemNumber, 10) === it.offer[item];
     }
   };
 
-  var checkGuestNumber = function (it) {
-    var guestNumber = document.querySelector('#housing-guests').value;
-    if (guestNumber === 'any') {
-      return true;
-    } else {
-      return parseInt(guestNumber, 10) === it.offer.guests;
-    }
-  };
-
-  var checkWifi = function (it) {
-    var wifi = document.querySelector('#filter-wifi').checked;
-    if (!wifi) {
-      return true;
-    } else {
-      return it.offer.features.indexOf('wifi') >= 0;
-    }
-  };
-  var checkDishwasher = function (it) {
-    var dishwasher = document.querySelector('#filter-dishwasher').checked;
-    if (!dishwasher) {
-      return true;
-    } else {
-      return it.offer.features.indexOf('dishwasher') >= 0;
-    }
-  };
-  var checkParking = function (it) {
-    var parking = document.querySelector('#filter-parking').checked;
-    if (!parking) {
-      return true;
-    } else {
-      return it.offer.features.indexOf('parking') >= 0;
-    }
+  var checkFeatures = function (it) {
+    var validity = true;
+    checkedFeatures.forEach(function (feature) {
+      if (it.offer.features.indexOf(feature) === -1) {
+        validity = false;
+      }
+    });
+    return validity;
   };
 
   var filerFunction = function (it) {
-    return checktType(it) && checkPrice(it) && checkRoomNumber(it) && checkGuestNumber(it)
-    && checkWifi(it) && checkDishwasher(it) && checkParking(it);
+    return checktType(it) && checkPrice(it) && checkNumber(it, 'rooms') && checkNumber(it, 'guests')
+    && checkFeatures(it);
   };
 
   var updateAppartments = function () {
+    checkedFeatures = Array.from(features).map(function (it) {
+      return it.checked ? it.value : false;
+    }).filter(function (it) {
+      return it;
+    });
     window.pin.renderPins(appartments
       .slice()
       .filter(filerFunction)
