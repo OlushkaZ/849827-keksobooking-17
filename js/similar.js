@@ -1,14 +1,10 @@
 'use strict';
 (function () {
-  var appartments = [];
+  // var appartments = [];
   var PriceBound = {
     LOW_BOUND: 10000,
     HIGH_BOUND: 50000
   };
-  var main = document.querySelector('main');
-  var errorTemplate = document.querySelector('#error')
-  .content
-  .querySelector('.error');
 
   var features = document.querySelector('.map__filters').querySelectorAll('input');
   var checkedFeatures = [];
@@ -62,7 +58,7 @@
     && checkFeatures(it);
   };
 
-  var updateAppartments = function () {
+  var updateAppartments = function (appartments) {
     checkedFeatures = Array.from(features).map(function (it) {
       return it.checked ? it.value : false;
     }).filter(function (it) {
@@ -74,19 +70,9 @@
       .slice(0, 5));
   };
 
-  var successHandler = function (data) {
-    appartments = data;
-    updateAppartments();
-  };
-
-  var errorHandler = function () {
-    var errorElement = errorTemplate.cloneNode(true);
-    main.insertAdjacentElement('afterbegin', errorElement);
-  };
-
   window.similar = {
-    successHandler: successHandler,
-    errorHandler: errorHandler,
+    // successHandler: successHandler,
+    // errorHandler: errorHandler,
     updateAppartments: updateAppartments
   };
 })();

@@ -26,7 +26,7 @@
 
   filterForm.addEventListener('change', function () {
     window.debounce(function () {
-      window.similar.updateAppartments();
+      window.similar.updateAppartments(window.map.appartments);
     })();
     window.card.remove();
   });
