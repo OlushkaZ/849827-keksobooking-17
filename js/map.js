@@ -83,7 +83,6 @@
     main.appendChild(errorMessage);
     document.addEventListener('click', removeErrorMessage);
     document.addEventListener('keydown', removeErrorMessage);
-    // main.insertAdjacentElement('afterbegin', errorMessage);
   };
 
   setInactivState();

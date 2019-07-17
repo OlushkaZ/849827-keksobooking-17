@@ -1,13 +1,12 @@
 'use strict';
 (function () {
-  // var appartments = [];
   var PriceBound = {
     LOW_BOUND: 10000,
     HIGH_BOUND: 50000
   };
-
   var features = document.querySelector('.map__filters').querySelectorAll('input');
   var checkedFeatures = [];
+  var maxOfferCount = 5;
 
   var checktType = function (it) {
     var appartmentsType = document.querySelector('#housing-type').value;
@@ -64,15 +63,13 @@
     }).filter(function (it) {
       return it;
     });
-    window.pin.renderPins(appartments
+    window.pin.render(appartments
       .slice()
       .filter(filerFunction)
-      .slice(0, 5));
+      .slice(0, maxOfferCount));
   };
 
   window.similar = {
-    // successHandler: successHandler,
-    // errorHandler: errorHandler,
     updateAppartments: updateAppartments
   };
 })();

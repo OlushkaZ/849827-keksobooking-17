@@ -5,7 +5,7 @@
   var typeSelect = adForm.querySelector('#type');
   var timeSelect = adForm.querySelector('.ad-form__element--time');
   var priceInput = adForm.querySelector('#price');
-  var adr = adForm.querySelector('#address');
+  var adrInput = adForm.querySelector('#address');
   var capacitySelect = adForm.querySelector('#capacity');
   var roomNumberSelect = adForm.querySelector('#room_number');
   var resetButton = adForm.querySelector('.ad-form__reset');
@@ -16,24 +16,30 @@
   var filePhotoChooser = photoArea.querySelector('input[type=file]');
   var filePhotoContainer = adForm.querySelector('.ad-form__photo');
   var defaultAvatar = preview.src;
-  var appartments = {
+  var appartmentsConditions = {
     APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
     APPARTMENT_PRICE: [10000, 1000, 5000, 0]
   };
   var ESCAPE_CODE = 27;
+  var photoWidth = '70';
+  var exclusiveCondition = '100';
+
   var successTemplate = document.querySelector('#success')
   .content
   .querySelector('.success');
+
   var successMessage = successTemplate.cloneNode(true);
+
   var errorTemplate = document.querySelector('#error')
   .content
   .querySelector('.error');
+
   var errorMessage = errorTemplate.cloneNode(true);
   var errorButton = errorTemplate.querySelector('.error__button');
   var main = document.querySelector('main');
 
   var ValidText = {
-    GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'100\'',
+    GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'' + exclusiveCondition + '\'',
     GUEST1: 'В одной комнате может разместиться только один гость',
     GUEST2: 'В двух комнатах может разместиться один или два гостя',
     GUEST_LIMIT: 'Количество гостей превышает количество комнат',
@@ -44,7 +50,7 @@
   CustomValidation.prototype = {
     invalidities: [],
     checkValidityCapacity: function (capacity, roomNumber) {
-      if ((roomNumber.value === '100' && capacity.value !== '0') || (roomNumber.value !== '100' && capacity.value === '0')) {
+      if ((roomNumber.value === exclusiveCondition && capacity.value !== '0') || (roomNumber.value !== exclusiveCondition && capacity.value === '0')) {
         this.addInvalidity(ValidText.GUEST0);
       } else if (capacity.value > roomNumber.value) {
         this.addInvalidity(ValidText.GUEST_LIMIT);
@@ -73,8 +79,8 @@
     var inputCustomValidation = new CustomValidation();
     inputCustomValidation.invalidities = [];
     capacitySelect.setCustomValidity('');
-    inputCustomValidation.checkValidityCapacity(capacitySelect, roomNumberSelect); // Выявим ошибки
-    var customValidityMessage = inputCustomValidation.getInvalidities(); // Получим все сообщения об ошибках
+    inputCustomValidation.checkValidityCapacity(capacitySelect, roomNumberSelect);
+    var customValidityMessage = inputCustomValidation.getInvalidities();
     if (customValidityMessage) {
       capacitySelect.setCustomValidity(customValidityMessage);
     }
@@ -84,9 +90,9 @@
   roomNumberSelect.addEventListener('change', capacityHandler);
 
   typeSelect.addEventListener('change', function (evt) {
-    var index = appartments.APPARTMENT_TYPES.indexOf(evt.target.value);
-    priceInput.min = appartments.APPARTMENT_PRICE[index];
-    priceInput.placeholder = appartments.APPARTMENT_PRICE[index];
+    var index = appartmentsConditions.APPARTMENT_TYPES.indexOf(evt.target.value);
+    priceInput.min = appartmentsConditions.APPARTMENT_PRICE[index];
+    priceInput.placeholder = appartmentsConditions.APPARTMENT_PRICE[index];
   });
 
   timeSelect.addEventListener('change', function (evt) {
@@ -108,11 +114,11 @@
   };
 
   var setAddress = function () {
-    adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10) + window.map.pinHeightWithTale);
+    adrInput.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10) + window.map.pinHeightWithTale);
   };
 
   var setStartAddress = function () {
-    adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
+    adrInput.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
   };
 
   fileChooser.addEventListener('change', function (evt) {
@@ -126,7 +132,6 @@
     evt.stopPropagation();
     evt.preventDefault();
   });
-
   avatarArea.addEventListener('drop', function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -135,7 +140,7 @@
 
   filePhotoChooser.addEventListener('change', function (evt) {
     var img = document.createElement('img');
-    img.width = '70';
+    img.width = photoWidth;
     filePhotoContainer.appendChild(img);
     window.loadPhoto(evt.target, img);
   });
@@ -152,7 +157,7 @@
     evt.stopPropagation();
     evt.preventDefault();
     var img = document.createElement('img');
-    img.width = '70';
+    img.width = photoWidth;
     filePhotoContainer.appendChild(img);
     window.loadPhoto(evt.dataTransfer, img);
   });
@@ -169,7 +174,7 @@
     preview.src = defaultAvatar;
     cleanFilePhotoContainer();
     window.pin.refreshPinMain();
-    window.pin.clearPins();
+    window.pin.clear();
     window.map.setInactivState();
     window.card.remove();
     typeSelect.dispatchEvent(new Event('change'));
@@ -177,40 +182,40 @@
     setStartAddress();
   });
 
-  var removeSuccessMessage = function (evt) {
+  var successMessageHandler = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
       main.removeChild(successMessage);
-      document.removeEventListener('keydown', removeSuccessMessage);
-      document.removeEventListener('click', removeSuccessMessage);
+      document.removeEventListener('keydown', successMessageHandler);
+      document.removeEventListener('click', successMessageHandler);
     }
   };
 
-  var successHendler = function () {
+  var successHandler = function () {
     resetButton.dispatchEvent(new Event('click'));
 
     main.appendChild(successMessage);
-    document.addEventListener('click', removeSuccessMessage);
-    document.addEventListener('keydown', removeSuccessMessage);
+    document.addEventListener('click', successMessageHandler);
+    document.addEventListener('keydown', successMessageHandler);
   };
 
-  var removeErrorMessage = function (evt) {
+  var errorMessageHandler = function (evt) {
     if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
       main.removeChild(errorMessage);
-      document.removeEventListener('keydown', removeErrorMessage);
-      errorButton.removeEventListener('click', removeErrorMessage);
-      document.removeEventListener('click', removeErrorMessage);
+      document.removeEventListener('keydown', errorMessageHandler);
+      errorButton.removeEventListener('click', errorMessageHandler);
+      document.removeEventListener('click', errorMessageHandler);
     }
   };
 
-  var errorHendler = function () {
+  var errorHandler = function () {
     main.appendChild(errorMessage);
-    document.addEventListener('click', removeErrorMessage);
-    errorButton.addEventListener('click', removeErrorMessage);
-    document.addEventListener('keydown', removeErrorMessage);
+    document.addEventListener('click', errorMessageHandler);
+    errorButton.addEventListener('click', errorMessageHandler);
+    document.addEventListener('keydown', errorMessageHandler);
   };
 
   adForm.addEventListener('submit', function (evt) {
-    window.backend.save(successHendler, errorHendler, new FormData(adForm));
+    window.backend.save(successHandler, errorHandler, new FormData(adForm));
     evt.preventDefault();
   });
 
