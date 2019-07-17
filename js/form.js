@@ -9,6 +9,13 @@
   var capacitySelect = adForm.querySelector('#capacity');
   var roomNumberSelect = adForm.querySelector('#room_number');
   var resetButton = adForm.querySelector('.ad-form__reset');
+  var avatarArea = adForm.querySelector('.ad-form-header__upload');
+  var fileChooser = avatarArea.querySelector('input[type=file]');
+  var preview = avatarArea.querySelector('img');
+  var photoArea = adForm.querySelector('.ad-form__upload');
+  var filePhotoChooser = photoArea.querySelector('input[type=file]');
+  var filePhotoContainer = adForm.querySelector('.ad-form__photo');
+  var defaultAvatar = preview.src;
   var appartments = {
     APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
     APPARTMENT_PRICE: [10000, 1000, 5000, 0]
@@ -108,9 +115,59 @@
     adr.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
   };
 
+  fileChooser.addEventListener('change', function (evt) {
+    window.loadPhoto(evt.target, preview);
+  });
+
+  avatarArea.addEventListener('dragenter', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+  });
+  avatarArea.addEventListener('dragover', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+  });
+  avatarArea.addEventListener('drop', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    window.loadPhoto(evt.dataTransfer, preview);
+  });
+
+  filePhotoChooser.addEventListener('change', function (evt) {
+    var img = document.createElement('img');
+    img.width = '70';
+    filePhotoContainer.appendChild(img);
+    window.loadPhoto(evt.target, img);
+  });
+
+  photoArea.addEventListener('dragenter', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+  });
+  photoArea.addEventListener('dragover', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+  });
+  photoArea.addEventListener('drop', function (evt) {
+    evt.stopPropagation();
+    evt.preventDefault();
+    var img = document.createElement('img');
+    img.width = '70';
+    filePhotoContainer.appendChild(img);
+    window.loadPhoto(evt.dataTransfer, img);
+  });
+
+  var cleanFilePhotoContainer = function () {
+    while (filePhotoContainer.firstElementChild) {
+      filePhotoContainer.removeChild(filePhotoContainer.firstElementChild);
+    }
+  };
+
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     adForm.reset();
+    preview.src = defaultAvatar;
+    cleanFilePhotoContainer();
     window.pin.refreshPinMain();
     window.pin.clearPins();
     window.map.setInactivState();
