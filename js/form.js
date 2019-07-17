@@ -12,9 +12,12 @@
   var avatarArea = adForm.querySelector('.ad-form-header__upload');
   var fileChooser = avatarArea.querySelector('input[type=file]');
   var preview = avatarArea.querySelector('img');
+<<<<<<< HEAD
   var photoArea = adForm.querySelector('.ad-form__upload');
   var filePhotoChooser = photoArea.querySelector('input[type=file]');
   var filePhotoContainer = adForm.querySelector('.ad-form__photo');
+=======
+>>>>>>> 3f3fb757e70c067df23801a0c4449e14f074eca5
   var defaultAvatar = preview.src;
   var appartments = {
     APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
@@ -118,7 +121,10 @@
   fileChooser.addEventListener('change', function (evt) {
     window.loadPhoto(evt.target, preview);
   });
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3f3fb757e70c067df23801a0c4449e14f074eca5
   avatarArea.addEventListener('dragenter', function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
@@ -127,12 +133,17 @@
     evt.stopPropagation();
     evt.preventDefault();
   });
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3f3fb757e70c067df23801a0c4449e14f074eca5
   avatarArea.addEventListener('drop', function (evt) {
     evt.stopPropagation();
     evt.preventDefault();
     window.loadPhoto(evt.dataTransfer, preview);
   });
 
+<<<<<<< HEAD
   filePhotoChooser.addEventListener('change', function (evt) {
     var img = document.createElement('img');
     img.width = '70';
@@ -163,11 +174,16 @@
     }
   };
 
+=======
+>>>>>>> 3f3fb757e70c067df23801a0c4449e14f074eca5
   resetButton.addEventListener('click', function (evt) {
     evt.preventDefault();
     adForm.reset();
     preview.src = defaultAvatar;
+<<<<<<< HEAD
     cleanFilePhotoContainer();
+=======
+>>>>>>> 3f3fb757e70c067df23801a0c4449e14f074eca5
     window.pin.refreshPinMain();
     window.pin.clearPins();
     window.map.setInactivState();
