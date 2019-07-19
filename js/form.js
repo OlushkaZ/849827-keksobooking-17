@@ -45,7 +45,6 @@
     GUEST_LIMIT: 'Количество гостей превышает количество комнат',
     GUEST_ERROR: 'Неизвестное колиество комнат: '
   };
-
   var CustomValidation = function () { };
   CustomValidation.prototype = {
     invalidities: [],
