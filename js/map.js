@@ -72,7 +72,6 @@
       main.removeChild(errorMessage);
       resetButton.dispatchEvent(new Event('click'));
       document.removeEventListener('keydown', removeErrorMessage);
-      // errorButton.removeEventListener('click', removeErrorMessage);
       document.removeEventListener('click', removeErrorMessage);
     }
   };
