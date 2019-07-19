@@ -10,7 +10,15 @@
     top: map.offsetTop,
     bottom: map.offsetTop + map.offsetHeight - map.querySelector('.map__filters-container').offsetHeight
   };
+  var appartments = [];
+  var main = document.querySelector('main');
+  var errorTemplate = document.querySelector('#error')
+  .content
+  .querySelector('.error');
 
+  var errorMessage = errorTemplate.cloneNode(true);
+  var ESCAPE_CODE = 27;
+  var resetButton = document.querySelector('.ad-form__reset');
   var taleSize = parseInt(window.getComputedStyle(
       document.querySelector('.map__pin--main'), ':after'
   ).getPropertyValue('border-top-width'), 10);
@@ -20,13 +28,14 @@
     flagInactivState = true;
     map.classList.add('map--faded');
     window.form.setInactivAdForm();
-    window.filterForm.setInactivFilterForm();
+    window.filterForm.toggleActiveFilterForm();
   };
 
   window.map = {
     map: map,
     mapBounders: mapBounders,
     mapPinMain: mapPinMain,
+    appartments: appartments,
     pinHeightWithTale: pinHeightWithTale,
     setInactivState: setInactivState
   };
@@ -34,7 +43,7 @@
   var setActiveState = function () {
     map.classList.remove('map--faded');
     window.form.setActivAdForm();
-    window.filterForm.setActivFilterForm();
+    window.filterForm.toggleActiveFilterForm();
     flagInactivState = false;
   };
 
@@ -51,6 +60,28 @@
     } else if (y >= mapBounders.bottom - pinHeightWithTale) {
       mapPinMain.style.top = mapBounders.bottom - pinHeightWithTale + 'px';
     }
+  };
+
+  var successHandler = function (data) {
+    window.map.appartments = data;
+    window.similar.updateAppartments(data);
+  };
+
+  var removeErrorMessage = function (evt) {
+    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+      main.removeChild(errorMessage);
+      resetButton.dispatchEvent(new Event('click'));
+      document.removeEventListener('keydown', removeErrorMessage);
+      document.removeEventListener('click', removeErrorMessage);
+    }
+  };
+
+  var errorHandler = function () {
+    errorMessage.firstElementChild.textContent = 'Ошибка загрузки данных';
+    errorMessage.lastElementChild.classList.add('visually-hidden');
+    main.appendChild(errorMessage);
+    document.addEventListener('click', removeErrorMessage);
+    document.addEventListener('keydown', removeErrorMessage);
   };
 
   setInactivState();
@@ -92,7 +123,7 @@
       upEvt.preventDefault();
       if (flagInactivState) {
         setActiveState();
-        window.backend.load(window.similar.successHandler, window.similar.errorHandler);
+        window.backend.load(successHandler, errorHandler);
       }
       correctCoordinates();
       window.form.setAddress();

@@ -1,9 +1,9 @@
 'use strict';
 (function () {
-
-  var pinList = document.querySelector('.map').querySelector('.map__pins');
+  var map = document.querySelector('.map');
+  var pinList = map.querySelector('.map__pins');
   var START_POS_OFFERS = 2;
-  var mapPinMain = document.querySelector('.map').querySelector('.map__pin--main');
+  var mapPinMain = map.querySelector('.map__pin--main');
   var pinMainStart = {
     top: mapPinMain.style.top,
     left: mapPinMain.style.left
@@ -54,8 +54,8 @@
   };
 
   window.pin = {
-    clearPins: clearPins,
-    renderPins: renderPins,
+    clear: clearPins,
+    render: renderPins,
     refreshPinMain: refreshPinMain
   };
 })();

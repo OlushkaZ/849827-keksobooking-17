@@ -1,17 +1,15 @@
 'use strict';
 (function () {
-  var appartments = [];
   var PriceBound = {
     LOW_BOUND: 10000,
     HIGH_BOUND: 50000
   };
-  var main = document.querySelector('main');
-  var errorTemplate = document.querySelector('#error')
-  .content
-  .querySelector('.error');
+  var features = document.querySelector('.map__filters').querySelectorAll('input');
+  var checkedFeatures = [];
+  var maxOfferCount = 5;
 
   var checktType = function (it) {
-    var appartmentsType = window.filterForm.typeSelect.value;
+    var appartmentsType = document.querySelector('#housing-type').value;
     if (appartmentsType === 'any') {
       return true;
     } else {
@@ -20,7 +18,7 @@
   };
 
   var checkPrice = function (it) {
-    var appartmentsPrice = window.filterForm.priceSelect.value;
+    var appartmentsPrice = document.querySelector('#housing-price').value;
     switch (appartmentsPrice) {
       case 'any':
         return true;
@@ -35,30 +33,43 @@
     }
   };
 
-  var filerFunction = function (it) {
-    return checktType(it) && checkPrice(it);
+  var checkNumber = function (it, item) {
+    var itemNumber = document.querySelector('#housing-' + item).value;
+    if (itemNumber === 'any') {
+      return true;
+    } else {
+      return parseInt(itemNumber, 10) === it.offer[item];
+    }
   };
 
-  var updateAppartments = function () {
-    window.pin.renderPins(appartments
+  var checkFeatures = function (it) {
+    var validity = true;
+    checkedFeatures.forEach(function (feature) {
+      if (it.offer.features.indexOf(feature) === -1) {
+        validity = false;
+      }
+    });
+    return validity;
+  };
+
+  var filerFunction = function (it) {
+    return checktType(it) && checkPrice(it) && checkNumber(it, 'rooms') && checkNumber(it, 'guests')
+    && checkFeatures(it);
+  };
+
+  var updateAppartments = function (appartments) {
+    checkedFeatures = Array.from(features).map(function (it) {
+      return it.checked ? it.value : false;
+    }).filter(function (it) {
+      return it;
+    });
+    window.pin.render(appartments
       .slice()
       .filter(filerFunction)
-      .slice(0, 5));
-  };
-
-  var successHandler = function (data) {
-    appartments = data;
-    updateAppartments();
-  };
-
-  var errorHandler = function () {
-    var errorElement = errorTemplate.cloneNode(true);
-    main.insertAdjacentElement('afterbegin', errorElement);
+      .slice(0, maxOfferCount));
   };
 
   window.similar = {
-    successHandler: successHandler,
-    errorHandler: errorHandler,
     updateAppartments: updateAppartments
   };
 })();
