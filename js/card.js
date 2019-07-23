@@ -1,9 +1,8 @@
 'use strict';
 (function () {
-
+  var ESCAPE_CODE = 27;
   var map = document.querySelector('.map');
   var filter = map.querySelector('.map__filters-container');
-  var ESCAPE_CODE = 27;
   var cardTemplate = document.querySelector('#card')
   .content
   .querySelector('.map__card');
@@ -19,28 +18,8 @@
       case 'palace':
         return 'Дворец';
       default:
-        throw new Error('Неизвестный тип жилья: «' + type + '»');
+        return false;
     }
-  };
-
-  var formatNumber = function (num, str, var1, var2, var3) {
-    num = Math.floor(num);
-    var numbers = num.toString().split('');
-    var lastDig = parseInt(numbers.pop(), 10);
-    var preLastDig = parseInt(numbers.pop(), 10);
-
-    if ((preLastDig === 1) || ((lastDig === 0) || (lastDig >= 5 && lastDig <= 9))) {
-      return num + ' ' + str + var1;
-    }
-
-    if (lastDig >= 2 && lastDig <= 4) {
-      return num + ' ' + str + var2;
-    }
-
-    if (lastDig === 1) {
-      return num + ' ' + str + var3;
-    }
-    return num + ' ' + str;
   };
 
   var renderPhoto = function (parent, source) {
@@ -72,7 +51,7 @@
     renderCardSection(cardElement, '.popup__text--address', offer.offer.address, offer.offer.address);
     renderCardSection(cardElement, '.popup__text--price', offer.offer.price, offer.offer.price + '\u20BD');
     renderCardSection(cardElement, '.popup__type', offer.offer.type, getTypeName(offer.offer.type));
-    renderCardSection(cardElement, '.popup__text--capacity', offer.offer.rooms, formatNumber(offer.offer.rooms, 'комнат', '', 'ы', 'a') + ' для ' + formatNumber(offer.offer.guests, 'гост', 'ей', 'я', 'я'));
+    renderCardSection(cardElement, '.popup__text--capacity', offer.offer.rooms, window.util.formatNumber(offer.offer.rooms, 'комнат', '', 'ы', 'a') + ' для ' + window.util.formatNumber(offer.offer.guests, 'гост', 'ей', 'ей', 'я'));
     renderCardSection(cardElement, '.popup__text--time', offer.offer.checkin, 'Заезд после ' + offer.offer.checkin + ', выезд до ' + offer.offer.checkout);
     renderCardSection(cardElement, '.popup__description', offer.offer.description, offer.offer.description);
 

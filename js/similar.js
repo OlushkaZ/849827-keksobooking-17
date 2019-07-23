@@ -4,9 +4,9 @@
     LOW_BOUND: 10000,
     HIGH_BOUND: 50000
   };
+  var MAX_OFFER_COUNT = 5;
   var features = document.querySelector('.map__filters').querySelectorAll('input');
   var checkedFeatures = [];
-  var maxOfferCount = 5;
 
   var checktType = function (it) {
     var appartmentsType = document.querySelector('#housing-type').value;
@@ -29,7 +29,7 @@
       case 'high':
         return it.offer.price > PriceBound.HIGH_BOUND;
       default:
-        throw new Error('Неизвестный диапазон цен' + appartmentsPrice);
+        return false;
     }
   };
 
@@ -66,7 +66,7 @@
     window.pin.render(appartments
       .slice()
       .filter(filerFunction)
-      .slice(0, maxOfferCount));
+      .slice(0, MAX_OFFER_COUNT));
   };
 
   window.similar = {

@@ -1,6 +1,18 @@
 'use strict';
 
 (function () {
+  var appartmentsConditions = {
+    APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
+    APPARTMENT_PRICE: [10000, 1000, 5000, 0]
+  };
+  var ESCAPE_CODE = 27;
+  var ValidText = {
+    GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'' + exclusiveCondition + '\'',
+    GUEST1: 'В одной комнате может разместиться только один гость',
+    GUEST2: 'В двух комнатах может разместиться один или два гостя',
+    GUEST_LIMIT: 'Количество гостей превышает количество комнат',
+    GUEST_ERROR: 'Неизвестное колиество комнат: '
+  };
   var adForm = document.querySelector('.ad-form');
   var typeSelect = adForm.querySelector('#type');
   var timeSelect = adForm.querySelector('.ad-form__element--time');
@@ -16,11 +28,6 @@
   var filePhotoChooser = photoArea.querySelector('input[type=file]');
   var filePhotoContainer = adForm.querySelector('.ad-form__photo');
   var defaultAvatar = preview.src;
-  var appartmentsConditions = {
-    APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
-    APPARTMENT_PRICE: [10000, 1000, 5000, 0]
-  };
-  var ESCAPE_CODE = 27;
   var photoWidth = '70';
   var exclusiveCondition = '100';
 
@@ -38,13 +45,6 @@
   var errorButton = errorTemplate.querySelector('.error__button');
   var main = document.querySelector('main');
 
-  var ValidText = {
-    GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'' + exclusiveCondition + '\'',
-    GUEST1: 'В одной комнате может разместиться только один гость',
-    GUEST2: 'В двух комнатах может разместиться один или два гостя',
-    GUEST_LIMIT: 'Количество гостей превышает количество комнат',
-    GUEST_ERROR: 'Неизвестное колиество комнат: '
-  };
   var CustomValidation = function () { };
   CustomValidation.prototype = {
     invalidities: [],
@@ -62,7 +62,7 @@
             this.addInvalidity(ValidText.GUEST2);
             return;
           default:
-            throw new Error(ValidText.GUEST_ERROR + roomNumber);
+            return;
         }
       }
     },
@@ -116,8 +116,8 @@
     adrInput.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10) + window.map.pinHeightWithTale);
   };
 
-  var setStartAddress = function () {
-    adrInput.value = (parseInt(window.map.mapPinMain.style.left, 10) + Math.round(window.map.mapPinMain.offsetWidth / 2)) + ', ' + (parseInt(window.map.mapPinMain.style.top, 10));
+  var setStartAddress = function (element) {
+    adrInput.value = (parseInt(element.style.left, 10) + Math.round(element.offsetWidth / 2)) + ', ' + (parseInt(element.style.top, 10));
   };
 
   fileChooser.addEventListener('change', function (evt) {
@@ -172,7 +172,7 @@
     adForm.reset();
     preview.src = defaultAvatar;
     cleanFilePhotoContainer();
-    window.pin.refreshPinMain();
+    window.pin.refreshMain();
     window.pin.clear();
     window.map.setInactivState();
     window.card.remove();
