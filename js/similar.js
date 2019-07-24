@@ -4,9 +4,9 @@
     LOW_BOUND: 10000,
     HIGH_BOUND: 50000
   };
+  var MAX_OFFER_COUNT = 5;
   var features = document.querySelector('.map__filters').querySelectorAll('input');
   var checkedFeatures = [];
-  var maxOfferCount = 5;
 
   var checktType = function (it) {
     var appartmentsType = document.querySelector('#housing-type').value;
@@ -29,7 +29,7 @@
       case 'high':
         return it.offer.price > PriceBound.HIGH_BOUND;
       default:
-        throw new Error('Неизвестный диапазон цен' + appartmentsPrice);
+        return false;
     }
   };
 
@@ -52,21 +52,21 @@
     return validity;
   };
 
-  var filerFunction = function (it) {
-    return checktType(it) && checkPrice(it) && checkNumber(it, 'rooms') && checkNumber(it, 'guests')
-    && checkFeatures(it);
+  var filerFunction = function (offer) {
+    return checktType(offer) && checkPrice(offer) && checkNumber(offer, 'rooms') && checkNumber(offer, 'guests')
+    && checkFeatures(offer);
   };
 
   var updateAppartments = function (appartments) {
-    checkedFeatures = Array.from(features).map(function (it) {
-      return it.checked ? it.value : false;
-    }).filter(function (it) {
-      return it;
+    checkedFeatures = Array.from(features).map(function (item) {
+      return item.checked ? item.value : false;
+    }).filter(function (item) {
+      return item;
     });
     window.pin.render(appartments
       .slice()
       .filter(filerFunction)
-      .slice(0, maxOfferCount));
+      .slice(0, MAX_OFFER_COUNT));
   };
 
   window.similar = {

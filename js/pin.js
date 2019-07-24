@@ -2,7 +2,6 @@
 (function () {
   var map = document.querySelector('.map');
   var pinList = map.querySelector('.map__pins');
-  var START_POS_OFFERS = 2;
   var mapPinMain = map.querySelector('.map__pin--main');
   var pinMainStart = {
     top: mapPinMain.style.top,
@@ -34,9 +33,10 @@
   };
 
   var clearPins = function () {
-    while (pinList.children.length > START_POS_OFFERS) {
-      pinList.removeChild(pinList.lastChild);
-    }
+    var oldPins = pinList.querySelectorAll('.map__pin:not(.map__pin--main)');
+    Array.from(oldPins).forEach(function (pin) {
+      pinList.removeChild(pin);
+    });
   };
 
   var renderPins = function (data) {
@@ -48,7 +48,7 @@
     pinList.appendChild(fragment);
   };
 
-  var refreshPinMain = function () {
+  var refreshMain = function () {
     mapPinMain.style.left = pinMainStart.left;
     mapPinMain.style.top = pinMainStart.top;
   };
@@ -56,6 +56,6 @@
   window.pin = {
     clear: clearPins,
     render: renderPins,
-    refreshPinMain: refreshPinMain
+    refreshMain: refreshMain
   };
 })();
