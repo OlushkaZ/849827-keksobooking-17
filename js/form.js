@@ -178,7 +178,7 @@
     window.card.remove();
     typeSelect.dispatchEvent(new Event('change'));
     window.filterForm.filterReset();
-    setStartAddress();
+    setStartAddress(window.map.mapPinMain);
   });
 
   var successMessageHandler = function (evt) {

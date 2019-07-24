@@ -52,16 +52,16 @@
     return validity;
   };
 
-  var filerFunction = function (it) {
-    return checktType(it) && checkPrice(it) && checkNumber(it, 'rooms') && checkNumber(it, 'guests')
-    && checkFeatures(it);
+  var filerFunction = function (offer) {
+    return checktType(offer) && checkPrice(offer) && checkNumber(offer, 'rooms') && checkNumber(offer, 'guests')
+    && checkFeatures(offer);
   };
 
   var updateAppartments = function (appartments) {
-    checkedFeatures = Array.from(features).map(function (it) {
-      return it.checked ? it.value : false;
-    }).filter(function (it) {
-      return it;
+    checkedFeatures = Array.from(features).map(function (item) {
+      return item.checked ? item.value : false;
+    }).filter(function (item) {
+      return item;
     });
     window.pin.render(appartments
       .slice()
