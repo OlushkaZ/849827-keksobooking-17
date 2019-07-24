@@ -2,15 +2,11 @@
 
 (function () {
   var ESCAPE_CODE = 27;
+  var MIN_HEIGHT = 130;
+  var MAX_HEIGHT = 630;
   var map = document.querySelector('.map');
   var flagInactivState;
   var mapPinMain = map.querySelector('.map__pin--main');
-  var mapBounders = {
-    left: map.offsetLeft,
-    right: map.offsetLeft + map.offsetWidth,
-    top: map.offsetTop,
-    bottom: map.offsetTop + map.offsetHeight - map.querySelector('.map__filters-container').offsetHeight
-  };
   var appartments = [];
   var main = document.querySelector('main');
   var errorTemplate = document.querySelector('#error')
@@ -23,6 +19,12 @@
       document.querySelector('.map__pin--main'), ':after'
   ).getPropertyValue('border-top-width'), 10);
   var pinHeightWithTale = mapPinMain.offsetHeight + taleSize;
+  var mapBounders = {
+    left: map.offsetLeft,
+    right: map.offsetLeft + map.offsetWidth,
+    top: MIN_HEIGHT - pinHeightWithTale,
+    bottom: MAX_HEIGHT
+  };
 
   var setInactivState = function () {
     flagInactivState = true;
@@ -47,8 +49,8 @@
     } else if (x >= map.clientWidth) {
       mapPinMain.style.left = map.clientWidth - halfPinWidth + 'px';
     }
-    if (y <= 0) {
-      mapPinMain.style.top = 0 + 'px';
+    if (y <= mapBounders.top) {
+      mapPinMain.style.top = mapBounders.top + 'px';
     } else if (y >= mapBounders.bottom - pinHeightWithTale) {
       mapPinMain.style.top = mapBounders.bottom - pinHeightWithTale + 'px';
     }
