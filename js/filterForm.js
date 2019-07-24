@@ -11,7 +11,7 @@
 
   filterForm.addEventListener('change', function () {
     window.debounce(function () {
-      window.similar.updateAppartments(window.map.appartments);
+      window.similar.updateApartments(window.map.apartments);
     })();
     window.card.remove();
   });

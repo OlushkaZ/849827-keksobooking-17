@@ -1,11 +1,10 @@
 'use strict';
 
 (function () {
-  var appartmentsConditions = {
-    APPARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
-    APPARTMENT_PRICE: [10000, 1000, 5000, 0]
+  var apartmentsConditions = {
+    APARTMENT_TYPES: ['palace', 'flat', 'house', 'bungalo'],
+    APARTMENT_PRICE: [10000, 1000, 5000, 0]
   };
-  var ESCAPE_CODE = 27;
   var ValidText = {
     GUEST0: 'Количество мест \'не для гостей\' соответствует количеству комнат \'' + exclusiveCondition + '\'',
     GUEST1: 'В одной комнате может разместиться только один гость',
@@ -89,9 +88,9 @@
   roomNumberSelect.addEventListener('change', capacityHandler);
 
   typeSelect.addEventListener('change', function (evt) {
-    var index = appartmentsConditions.APPARTMENT_TYPES.indexOf(evt.target.value);
-    priceInput.min = appartmentsConditions.APPARTMENT_PRICE[index];
-    priceInput.placeholder = appartmentsConditions.APPARTMENT_PRICE[index];
+    var index = apartmentsConditions.APARTMENT_TYPES.indexOf(evt.target.value);
+    priceInput.min = apartmentsConditions.APARTMENT_PRICE[index];
+    priceInput.placeholder = apartmentsConditions.APARTMENT_PRICE[index];
   });
 
   timeSelect.addEventListener('change', function (evt) {
@@ -182,7 +181,7 @@
   });
 
   var successMessageHandler = function (evt) {
-    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+    if (evt.type === 'click' || evt.keyCode === window.util.escapeCode) {
       main.removeChild(successMessage);
       document.removeEventListener('keydown', successMessageHandler);
       document.removeEventListener('click', successMessageHandler);
@@ -198,7 +197,7 @@
   };
 
   var errorMessageHandler = function (evt) {
-    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+    if (evt.type === 'click' || evt.keyCode === window.util.escapeCode) {
       main.removeChild(errorMessage);
       document.removeEventListener('keydown', errorMessageHandler);
       errorButton.removeEventListener('click', errorMessageHandler);

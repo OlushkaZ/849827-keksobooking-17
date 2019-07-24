@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESCAPE_CODE = 27;
   var toggleActiveForm = function (formElements) {
     Array.from(formElements).forEach(function (it) {
       it.disabled = !it.disabled;
@@ -29,6 +30,7 @@
 
   window.util = {
     toggleActiveForm: toggleActiveForm,
-    formatNumber: formatNumber
+    formatNumber: formatNumber,
+    escapeCode: ESCAPE_CODE
   };
 })();

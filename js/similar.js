@@ -9,17 +9,17 @@
   var checkedFeatures = [];
 
   var checktType = function (it) {
-    var appartmentsType = document.querySelector('#housing-type').value;
-    if (appartmentsType === 'any') {
+    var apartmentsType = document.querySelector('#housing-type').value;
+    if (apartmentsType === 'any') {
       return true;
     } else {
-      return it.offer.type === appartmentsType;
+      return it.offer.type === apartmentsType;
     }
   };
 
   var checkPrice = function (it) {
-    var appartmentsPrice = document.querySelector('#housing-price').value;
-    switch (appartmentsPrice) {
+    var apartmentsPrice = document.querySelector('#housing-price').value;
+    switch (apartmentsPrice) {
       case 'any':
         return true;
       case 'middle':
@@ -57,19 +57,19 @@
     && checkFeatures(offer);
   };
 
-  var updateAppartments = function (appartments) {
+  var updateApartments = function (apartments) {
     checkedFeatures = Array.from(features).map(function (item) {
       return item.checked ? item.value : false;
     }).filter(function (item) {
       return item;
     });
-    window.pin.render(appartments
+    window.pin.render(apartments
       .slice()
       .filter(filerFunction)
       .slice(0, MAX_OFFER_COUNT));
   };
 
   window.similar = {
-    updateAppartments: updateAppartments
+    updateApartments: updateApartments
   };
 })();
