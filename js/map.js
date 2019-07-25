@@ -1,13 +1,12 @@
 'use strict';
 
 (function () {
-  var ESCAPE_CODE = 27;
   var MIN_HEIGHT = 130;
   var MAX_HEIGHT = 630;
   var map = document.querySelector('.map');
   var flagInactivState;
   var mapPinMain = map.querySelector('.map__pin--main');
-  var appartments = [];
+  var apartments = [];
   var main = document.querySelector('main');
   var errorTemplate = document.querySelector('#error')
   .content
@@ -57,12 +56,12 @@
   };
 
   var successHandler = function (data) {
-    window.map.appartments = data;
-    window.similar.updateAppartments(data);
+    window.map.apartments = data;
+    window.similar.updateApartments(data);
   };
 
   var errorMessageHandler = function (evt) {
-    if (evt.type === 'click' || evt.keyCode === ESCAPE_CODE) {
+    if (evt.type === 'click' || evt.keyCode === window.util.escapeCode) {
       main.removeChild(errorMessage);
       resetButton.dispatchEvent(new Event('click'));
       document.removeEventListener('keydown', errorMessageHandler);
@@ -136,7 +135,7 @@
     map: map,
     mapBounders: mapBounders,
     mapPinMain: mapPinMain,
-    appartments: appartments,
+    apartments: apartments,
     pinHeightWithTale: pinHeightWithTale,
     setInactivState: setInactivState
   };

@@ -1,6 +1,5 @@
 'use strict';
 (function () {
-  var ESCAPE_CODE = 27;
   var map = document.querySelector('.map');
   var filter = map.querySelector('.map__filters-container');
   var cardTemplate = document.querySelector('#card')
@@ -86,7 +85,7 @@
   };
 
   var escHandler = function (evt) {
-    if (evt.keyCode === ESCAPE_CODE) {
+    if (evt.keyCode === window.util.escapeCode) {
       var card = map.querySelector('.map__card');
       if (card) {
         map.removeChild(card);
